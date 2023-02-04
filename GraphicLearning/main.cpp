@@ -18,7 +18,13 @@ int main()
 
 		sf::Shader fragmentShader;
 		if (!fragmentShader.loadFromFile("Shaders/OutputShader.frag", sf::Shader::Fragment))
-			exit(-1);
+		{
+			std::stringstream ss;
+			ss << "Shader::Error of loading or compiling GLSL shader: [" << "Shaders/OutputShader.frag]" << "!";
+			throw std::exception(ss.str().c_str());
+		}
+
+		fragmentShader.setUniform("u_resolution", sf::Vector2f(w, h));
 
 		while (window.isOpen())
 		{
