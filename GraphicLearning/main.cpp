@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <sstream>
+#include <direct.h>
 
 int main()
 {
@@ -34,13 +35,13 @@ int main()
 	}
 	catch (const std::exception& ex)
 	{
+		_mkdir("SFMLLogs"); // return -1 if difectory is exist, 0 - if succesfully created
 		std::ofstream file("SFMLLogs/Exceptions.txt", std::ios::out);
 		if (file.is_open())
 		{
 			file << "Error::" << ex.what();
 			return -1;
 		}
-
 		file.close();
 	}
 
