@@ -7,15 +7,18 @@ int main()
 {
 	try
 	{
-		sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML_test");
+		int w = 1920;
+		int h = 1080;
 
-		sf::Shader shader;
-		if (!shader.loadFromFile("Shaders/OutputShader.frag", sf::Shader::Fragment))
-		{
-			std::stringstream ss;
-			ss << "Shader::Error of loading or compiling GLSL shader: [" << "Shaders/OutputShader.frag]" << "!";
-			throw std::exception(ss.str().c_str());
-		}
+		sf::RenderWindow window(sf::VideoMode(w, h), "SFML_test");
+		window.setFramerateLimit(60);
+		sf::RenderTexture firstTexture;
+		firstTexture.create(w, h);
+		sf::Sprite firstTextureSprite = sf::Sprite(firstTexture.getTexture());
+
+		sf::Shader fragmentShader;
+		if (!fragmentShader.loadFromFile("Shaders/OutputShader.frag", sf::Shader::Fragment))
+			exit(-1);
 
 		while (window.isOpen())
 		{
@@ -28,9 +31,13 @@ int main()
 				}
 			}
 
-			window.clear(sf::Color(255, 0, 0, 0));
+			sf::Shader::bind(&fragmentShader);
 
+			window.clear();
+			window.draw(firstTextureSprite);
 			window.display();
+
+			sf::Shader::bind(NULL);
 		}
 	}
 	catch (const std::exception& ex)
