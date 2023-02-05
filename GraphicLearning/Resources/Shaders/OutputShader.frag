@@ -20,8 +20,10 @@ vec3 castRay(in vec3 ro, in vec3 rd)
 	vec3 itPos = ro + rd * it.x;
 	vec3 n = itPos;
 	vec3 light = normalize(vec3(-0.5, 0.75, 1.0));
-	float dissuse = dot(light, n);
-	return vec3(dissuse);
+	vec3 reflected = rd - 2 * dot(n, rd) * n;
+	float diffuse = max(0.0, dot(light, n)) * 0.5;
+	float specular = pow(max(0.0, dot(reflected, light)), 32.0);
+	return vec3(diffuse + specular);
 }
 
 void main()
