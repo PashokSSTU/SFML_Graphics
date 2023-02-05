@@ -16,10 +16,12 @@ vec2 sphIntersect( in vec3 ro, in vec3 rd, in vec3 ce, float ra )
 
 vec3 castRay(in vec3 ro, in vec3 rd)
 {
-	vec2 it = sphIntersect(ro, rd, vec3(0.0, 0.0, 0.0), 1.0);
+	vec3 spherePos = vec3(5.0, 0.0, 0.0);
+	float sphereRadius = 1.0;
+	vec2 it = sphIntersect(ro, rd, spherePos, sphereRadius);
 	if(it.x < 0.0) return vec3(0.0);
 	vec3 itPos = ro + rd * it.x;
-	vec3 n = itPos;
+	vec3 n = normalize(itPos - spherePos);
 	vec3 light = normalize(vec3(cos(u_time), 0.75, sin(u_time)));
 	float diffuse = max(0.0, dot(light, n)) * 0.5;
 	float specular = pow(max(0.0, dot(reflect(rd, n), light)), 32.0);
