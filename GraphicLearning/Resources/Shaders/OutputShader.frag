@@ -15,10 +15,13 @@ vec2 sphIntersect( in vec3 ro, in vec3 rd, in vec3 ce, float ra )
 
 vec3 castRay(in vec3 ro, in vec3 rd)
 {
-	vec2 val = sphIntersect(ro, rd, vec3(0.0, 0.0, 0.0), 1.0);
-	if(val.x < 0.0) // no intersection
-		return vec3(0.0);
-	return vec3(1.0);
+	vec2 it = sphIntersect(ro, rd, vec3(0.0, 0.0, 0.0), 1.0);
+	if(it.x < 0.0) return vec3(0.0);
+	vec3 itPos = ro + rd * it.x;
+	vec3 n = itPos;
+	vec3 light = normalize(vec3(-0.5, 0.75, 1.0));
+	float dissuse = dot(light, n);
+	return vec3(dissuse);
 }
 
 void main()

@@ -79,7 +79,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\Libraries\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-system-d.lib;sfml-main-d.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\Libraries\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

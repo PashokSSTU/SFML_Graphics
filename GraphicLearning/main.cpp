@@ -15,6 +15,8 @@ int main()
 		sf::RenderTexture firstTexture;
 		firstTexture.create(w, h);
 		sf::Sprite firstTextureSprite = sf::Sprite(firstTexture.getTexture());
+		firstTextureSprite.setScale(1, -1); // textures are upside down by default
+		firstTextureSprite.setPosition(0, h);
 
 		sf::Shader fragmentShader;
 		if (!fragmentShader.loadFromFile("Shaders/OutputShader.frag", sf::Shader::Fragment))
