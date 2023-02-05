@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <direct.h>
+#include <ctime>
 
 int main()
 {
@@ -28,6 +29,8 @@ int main()
 
 		fragmentShader.setUniform("u_resolution", sf::Vector2f(w, h));
 
+		sf::Clock clock;
+
 		while (window.isOpen())
 		{
 			sf::Event event;
@@ -42,6 +45,7 @@ int main()
 			sf::Shader::bind(&fragmentShader);
 
 			window.clear();
+			fragmentShader.setUniform("u_time", (float)clock.getElapsedTime().asSeconds());
 			window.draw(firstTextureSprite);
 			window.display();
 

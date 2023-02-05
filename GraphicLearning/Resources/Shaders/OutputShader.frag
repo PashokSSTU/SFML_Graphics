@@ -1,6 +1,7 @@
 #version 130
 
 uniform vec2 u_resolution;
+uniform float u_time;
 
 vec2 sphIntersect( in vec3 ro, in vec3 rd, in vec3 ce, float ra )
 {
@@ -19,10 +20,9 @@ vec3 castRay(in vec3 ro, in vec3 rd)
 	if(it.x < 0.0) return vec3(0.0);
 	vec3 itPos = ro + rd * it.x;
 	vec3 n = itPos;
-	vec3 light = normalize(vec3(-0.5, 0.75, 1.0));
-	vec3 reflected = rd - 2 * dot(n, rd) * n;
+	vec3 light = normalize(vec3(cos(u_time), 0.75, sin(u_time)));
 	float diffuse = max(0.0, dot(light, n)) * 0.5;
-	float specular = pow(max(0.0, dot(reflected, light)), 32.0);
+	float specular = pow(max(0.0, dot(reflect(rd, n), light)), 32.0);
 	return vec3(diffuse + specular);
 }
 
