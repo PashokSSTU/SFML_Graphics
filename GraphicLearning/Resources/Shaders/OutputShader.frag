@@ -1,7 +1,15 @@
 #version 130
-
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform vec2 u_mouse;
+uniform vec3 u_position;
+
+mat2 rot(float a)
+{
+	float c = cos(a);
+	float s = sin(a);
+	return mat2(c, -s, s, c);
+}
 
 const float MAX_DIST = 99999.0;
 
@@ -69,7 +77,7 @@ vec3 castRay(in vec3 ro, in vec3 rd)
 
 
 	if(minIt.x == MAX_DIST) return vec3(0.0);
-	vec3 light = normalize(vec3(cos(u_time), 0.75, sin(u_time)));
+	vec3 light = normalize(vec3(-0.5, 0.75, 1.0));
 	float diffuse = max(0.0, dot(light, n)) * 0.5 + 0.1;
 	float specular = pow(max(0.0, dot(reflect(rd, n), light)), 32.0);
 	vec3 col = vec3(diffuse + specular);
@@ -79,8 +87,10 @@ vec3 castRay(in vec3 ro, in vec3 rd)
 void main()
 {
 	vec2 uv = (gl_TexCoord[0].xy - 0.5) * u_resolution / u_resolution.y; // преобразование текстурных координат в экранные координаты с учётом aspect-ratio
-	vec3 rayPos = vec3(-5.0, 0.0, 0.0);
+	vec3 rayPos = u_position;
 	vec3 rayDirection = normalize(vec3(1.0, uv)); // 1.0 - смотрит в сторону +х, uv - изменяем угол луча таким образом, чтобы он смотрел на пиксель
+	rayDirection.zx *= rot(u_mouse.y);
+	rayDirection.xy *= rot(u_mouse.x);
 	vec3 col = castRay(rayPos, rayDirection);
 	gl_FragColor = vec4(col, 1.0);
 }
